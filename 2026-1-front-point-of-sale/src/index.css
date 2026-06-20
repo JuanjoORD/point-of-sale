@@ -1,0 +1,48 @@
+/* Tailwind CSS — directivas base */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Variables globales ───────────────────────────────────────────────────── */
+:root {
+  --font-sans: 'Inter', 'Roboto', 'Helvetica', sans-serif;
+}
+
+/* ── Utilidades de componentes reutilizables ──────────────────────────────── */
+@layer components {
+  /* Tarjeta de contenido estándar */
+  .card {
+    @apply rounded-lg bg-white p-4 shadow-sm;
+  }
+
+  /* Sección de página */
+  .page-section {
+    @apply flex flex-col gap-4 p-4;
+  }
+
+  /* Encabezado de página */
+  .page-title {
+    @apply text-2xl font-bold text-gray-800;
+  }
+
+  /* Badge de estado genérico */
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+
+  .badge-success {
+    @apply badge bg-green-100 text-green-800;
+  }
+
+  .badge-warning {
+    @apply badge bg-yellow-100 text-yellow-800;
+  }
+
+  .badge-error {
+    @apply badge bg-red-100 text-red-800;
+  }
+
+  .badge-info {
+    @apply badge bg-blue-100 text-blue-800;
+  }
+}
