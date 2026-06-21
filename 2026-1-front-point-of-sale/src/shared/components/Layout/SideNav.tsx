@@ -21,31 +21,24 @@ import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import { useAuth } from '@/auth/contexts/AuthContext';
 import { appAssets } from '@/shared/config/assets';
 import { colorTokens } from '@/shared/config/colors';
-import { PERMISSIONS } from '@/shared/types/permissions.types';
+import { APP_NAV_ITEMS } from '@/shared/config/nav.config';
 
 const DRAWER_WIDTH = 260;
 
-interface NavItem {
-  label: string;
-  to: string;
-  icon: React.ReactNode;
-  permiso?: string;
-}
-
-const navItems: NavItem[] = [
-  { label: 'Dashboard', to: '/', icon: <DashboardOutlinedIcon />, permiso: PERMISSIONS.REPORTES_LEER },
-  { label: 'Reporte ventas', to: '/reports/sales', icon: <AssessmentOutlinedIcon />, permiso: PERMISSIONS.REPORTES_LEER },
-  { label: 'Top productos', to: '/reports/top-products', icon: <LeaderboardOutlinedIcon />, permiso: PERMISSIONS.REPORTES_LEER },
-  { label: 'Punto de venta', to: '/sales', icon: <PointOfSaleOutlinedIcon />, permiso: PERMISSIONS.VENTAS_CREAR },
-  { label: 'Categorias', to: '/inventory/categories', icon: <CategoryOutlinedIcon />, permiso: PERMISSIONS.PRODUCTOS_LEER },
-  { label: 'Ubicaciones', to: '/inventory/locations', icon: <PlaceOutlinedIcon />, permiso: PERMISSIONS.INVENTARIO_LEER },
-  { label: 'Productos', to: '/inventory/products', icon: <Inventory2OutlinedIcon />, permiso: PERMISSIONS.PRODUCTOS_LEER },
-  { label: 'Clientes', to: '/customers', icon: <PeopleOutlineIcon />, permiso: PERMISSIONS.CLIENTES_LEER },
-];
+const NAV_ICONS: Record<string, React.ReactNode> = {
+  '/': <DashboardOutlinedIcon />,
+  '/reports/sales': <AssessmentOutlinedIcon />,
+  '/reports/top-products': <LeaderboardOutlinedIcon />,
+  '/sales': <PointOfSaleOutlinedIcon />,
+  '/inventory/categories': <CategoryOutlinedIcon />,
+  '/inventory/locations': <PlaceOutlinedIcon />,
+  '/inventory/products': <Inventory2OutlinedIcon />,
+  '/customers': <PeopleOutlineIcon />,
+};
 
 function SideNav() {
   const { hasPermission } = useAuth();
-  const visibleItems = navItems.filter((item) => !item.permiso || hasPermission(item.permiso));
+  const visibleItems = APP_NAV_ITEMS.filter((item) => hasPermission(item.permission));
 
   return (
     <Drawer
@@ -74,10 +67,10 @@ function SideNav() {
       <List sx={{ px: 1, py: 2 }}>
         {visibleItems.map((item) => (
           <ListItemButton
-            key={item.to}
+            key={item.path}
             component={NavLink}
-            to={item.to}
-            end={item.to === '/'}
+            to={item.path}
+            end={item.path === '/'}
             sx={{
               borderRadius: 1,
               mb: 0.5,
@@ -92,7 +85,9 @@ function SideNav() {
               },
             }}
           >
-            <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>{item.icon}</ListItemIcon>
+            <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
+              {NAV_ICONS[item.path]}
+            </ListItemIcon>
             <ListItemText primary={item.label} />
           </ListItemButton>
         ))}

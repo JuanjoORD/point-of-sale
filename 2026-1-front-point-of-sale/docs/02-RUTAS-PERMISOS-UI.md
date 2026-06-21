@@ -32,3 +32,8 @@
 - Bloquear accion si no tiene permiso.
 - Mostrar mensaje claro de acceso denegado.
 - No confiar solo en frontend (backend siempre valida).
+- Ruta inicial y menu lateral definidos en `src/shared/config/nav.config.ts`.
+- Usuarios sin `reportes:leer` no usan `/` como home; se redirigen a su primera seccion permitida.
+
+## Matriz QA por rol
+Ver `08-QA-POR-ROL.md`.

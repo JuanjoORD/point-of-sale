@@ -121,3 +121,14 @@
 - Resultado: Compilacion y build correctos.
 - Bloqueos: Ninguno.
 - Siguiente paso: QA funcional por rol (Bloque 13).
+
+### Sesion 11
+- Fecha: 2026-06-20
+- Duracion: Bloque 13
+- Objetivo: QA funcional por rol y correccion de redireccion inicial segun permisos.
+- Cambios realizados: Config centralizada `nav.config.ts` (menu + ruta por defecto), `HomePage` con redirect para roles sin dashboard, `DefaultRouteRedirect` para rutas invalidas y post-login, SideNav alineado a config unica, documento `08-QA-POR-ROL.md` con matriz rol/ruta/acciones.
+- Archivos tocados: src/shared/config/nav.config.ts, src/router/HomePage.tsx, src/router/DefaultRouteRedirect.tsx, src/router/index.tsx, src/shared/components/Layout/SideNav.tsx, docs/02-RUTAS-PERMISOS-UI.md, docs/08-QA-POR-ROL.md, docs/README.md, docs/06-COPILOT-WORKFLOW.md.
+- Pruebas ejecutadas: npx tsc --noEmit, npm run build, revision estatica de matriz permisos vs pantallas.
+- Resultado: Compilacion y build correctos; VENDEDOR inicia en `/sales`, ALMACENERO en categorias, GERENTE/ADMIN en Dashboard.
+- Bloqueos: Ninguno.
+- Siguiente paso: Ajustes UX y cierre MVP frontend (Bloque 14).

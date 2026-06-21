@@ -7,9 +7,10 @@ import LocationsPage from '../features/inventory/pages/LocationsPage';
 import ProductsPage from '../features/inventory/pages/ProductsPage';
 import CustomersPage from '../features/customers/pages/CustomersPage';
 import SalesPage from '../features/sales/pages/SalesPage';
-import DashboardPage from '../features/dashboard/pages/DashboardPage';
 import SalesReportPage from '../features/reports/pages/SalesReportPage';
 import TopProductsReportPage from '../features/reports/pages/TopProductsReportPage';
+import HomePage from './HomePage';
+import DefaultRouteRedirect from './DefaultRouteRedirect';
 
 function AppRouter() {
   const { isAuthenticated } = useAuth();
@@ -26,7 +27,7 @@ function AppRouter() {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
-        <Route index element={<DashboardPage />} />
+        <Route index element={<HomePage />} />
         <Route path="inventory/categories" element={<CategoriesPage />} />
         <Route path="inventory/locations" element={<LocationsPage />} />
         <Route path="inventory/products" element={<ProductsPage />} />
@@ -34,10 +35,10 @@ function AppRouter() {
         <Route path="sales" element={<SalesPage />} />
         <Route path="reports/sales" element={<SalesReportPage />} />
         <Route path="reports/top-products" element={<TopProductsReportPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<DefaultRouteRedirect />} />
       </Route>
 
-      <Route path="/login" element={<Navigate to="/" replace />} />
+      <Route path="/login" element={<DefaultRouteRedirect />} />
     </Routes>
   );
 }

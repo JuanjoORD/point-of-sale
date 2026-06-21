@@ -12,7 +12,8 @@
 - Bloque 10 completado: dashboard ventas del dia en `/` con KPIs, filtro por fecha/ubicacion y top productos via GET `/dashboard/ventas-dia`.
 - Bloque 11 completado: reporte ventas por rango en `/reports/sales` con KPIs, filtros y exportacion CSV via GET `/reportes/ventas`.
 - Bloque 12 completado: reportes top productos en `/reports/top-products` (cantidad y valor) con filtros, limite configurable y exportacion CSV.
-- Proximo bloque: QA funcional por rol (Bloque 13).
+- Bloque 13 completado: QA funcional por rol, redireccion inicial segun permisos, menu centralizado en `nav.config.ts` y matriz en `08-QA-POR-ROL.md`.
+- Proximo bloque: Ajustes UX y cierre MVP frontend (Bloque 14).
 
 ## Ciclo por sesion
 1. Pedir estado actual del modulo.
@@ -33,5 +34,5 @@
 ## Como usar este workflow ahora
 - Reutilizar `DataTable`, `EntityDialog` y `QueryState` para nuevas pantallas maestras.
 - Colores solo desde `shared/config/colors.ts`; logos/imagenes desde `shared/config/assets.ts`.
-- Siguiente paso: QA funcional por rol (Bloque 13) y validacion de flujos POS/reportes.
+- Siguiente paso: ajustes UX finales y cierre MVP frontend (Bloque 14).
 - Mantener permisos con `PermissionGuard` y ocultar acciones segun rol.
