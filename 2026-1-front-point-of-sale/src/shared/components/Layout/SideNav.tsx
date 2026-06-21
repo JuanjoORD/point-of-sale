@@ -17,6 +17,7 @@ import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
 import { useAuth } from '@/auth/contexts/AuthContext';
 import { appAssets } from '@/shared/config/assets';
 import { colorTokens } from '@/shared/config/colors';
@@ -34,6 +35,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   { label: 'Dashboard', to: '/', icon: <DashboardOutlinedIcon />, permiso: PERMISSIONS.REPORTES_LEER },
   { label: 'Reporte ventas', to: '/reports/sales', icon: <AssessmentOutlinedIcon />, permiso: PERMISSIONS.REPORTES_LEER },
+  { label: 'Top productos', to: '/reports/top-products', icon: <LeaderboardOutlinedIcon />, permiso: PERMISSIONS.REPORTES_LEER },
   { label: 'Punto de venta', to: '/sales', icon: <PointOfSaleOutlinedIcon />, permiso: PERMISSIONS.VENTAS_CREAR },
   { label: 'Categorias', to: '/inventory/categories', icon: <CategoryOutlinedIcon />, permiso: PERMISSIONS.PRODUCTOS_LEER },
   { label: 'Ubicaciones', to: '/inventory/locations', icon: <PlaceOutlinedIcon />, permiso: PERMISSIONS.INVENTARIO_LEER },

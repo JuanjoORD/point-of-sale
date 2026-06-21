@@ -110,3 +110,14 @@
 - Resultado: Compilacion y build correctos.
 - Bloqueos: Ninguno.
 - Siguiente paso: Reportes top productos (Bloque 12).
+
+### Sesion 10
+- Fecha: 2026-06-20
+- Duracion: Bloque 12
+- Objetivo: Reportes top productos por cantidad y por valor en rango de fechas.
+- Cambios realizados: Endpoints GET `/reportes/top-productos-cantidad` y `/top-productos-valor` integrados, `TopProductsReportPage` con dos tablas lado a lado, filtros fecha/ubicacion/limite top, exportacion CSV combinada, ruta `/reports/top-products` y entrada en SideNav.
+- Archivos tocados: src/features/reports/types/reports.types.ts, src/features/reports/services/reportes.service.ts, src/features/reports/hooks/useTopProductos.ts, src/features/reports/pages/TopProductsReportPage.tsx, src/features/reports/utils/exportTopProductosCsv.ts, src/router/index.tsx, src/shared/components/Layout/SideNav.tsx, docs/06-COPILOT-WORKFLOW.md.
+- Pruebas ejecutadas: npx tsc --noEmit, npm run build.
+- Resultado: Compilacion y build correctos.
+- Bloqueos: Ninguno.
+- Siguiente paso: QA funcional por rol (Bloque 13).
