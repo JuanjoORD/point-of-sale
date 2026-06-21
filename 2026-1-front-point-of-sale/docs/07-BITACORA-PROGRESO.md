@@ -99,3 +99,14 @@
 - Resultado: Compilacion y build correctos.
 - Bloqueos: Ninguno.
 - Siguiente paso: Reporte ventas por rango (Bloque 11).
+
+### Sesion 09
+- Fecha: 2026-06-20
+- Duracion: Bloque 11
+- Objetivo: Reporte de ventas por rango de fechas con resumen agregado y exportacion CSV.
+- Cambios realizados: Modulo `reports` con servicio/hook contra GET `/reportes/ventas`, `SalesReportPage` con filtros fecha inicio/fin y ubicacion, KPIs (total, tickets, ticket promedio), boton exportar CSV, ruta `/reports/sales` y entrada en SideNav (`reportes:leer`).
+- Archivos tocados: src/features/reports/**, src/router/index.tsx, src/shared/components/Layout/SideNav.tsx, docs/06-COPILOT-WORKFLOW.md.
+- Pruebas ejecutadas: npx tsc --noEmit, npm run build.
+- Resultado: Compilacion y build correctos.
+- Bloqueos: Ninguno.
+- Siguiente paso: Reportes top productos (Bloque 12).

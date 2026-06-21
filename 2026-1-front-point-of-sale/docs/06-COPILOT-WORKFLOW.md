@@ -10,7 +10,8 @@
 - Bloque 8 completado: POS busqueda y carrito en `/sales` (Zustand + validacion de stock).
 - Bloque 9 completado: checkout POS con cliente, descuento opcional, confirmacion y comprobante via POST `/ventas`.
 - Bloque 10 completado: dashboard ventas del dia en `/` con KPIs, filtro por fecha/ubicacion y top productos via GET `/dashboard/ventas-dia`.
-- Proximo bloque: Reporte ventas por rango (Bloque 11).
+- Bloque 11 completado: reporte ventas por rango en `/reports/sales` con KPIs, filtros y exportacion CSV via GET `/reportes/ventas`.
+- Proximo bloque: Reportes top productos (Bloque 12).
 
 ## Ciclo por sesion
 1. Pedir estado actual del modulo.
@@ -31,5 +32,5 @@
 ## Como usar este workflow ahora
 - Reutilizar `DataTable`, `EntityDialog` y `QueryState` para nuevas pantallas maestras.
 - Colores solo desde `shared/config/colors.ts`; logos/imagenes desde `shared/config/assets.ts`.
-- Siguiente paso: reporte ventas por rango contra GET `/api/v1/reportes/ventas`.
+- Siguiente paso: reportes top productos contra GET `/api/v1/reportes/top-productos-cantidad` y `/top-productos-valor`.
 - Mantener permisos con `PermissionGuard` y ocultar acciones segun rol.

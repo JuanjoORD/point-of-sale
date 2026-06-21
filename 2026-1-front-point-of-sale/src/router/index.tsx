@@ -8,6 +8,7 @@ import ProductsPage from '../features/inventory/pages/ProductsPage';
 import CustomersPage from '../features/customers/pages/CustomersPage';
 import SalesPage from '../features/sales/pages/SalesPage';
 import DashboardPage from '../features/dashboard/pages/DashboardPage';
+import SalesReportPage from '../features/reports/pages/SalesReportPage';
 
 function AppRouter() {
   const { isAuthenticated } = useAuth();
@@ -30,6 +31,7 @@ function AppRouter() {
         <Route path="inventory/products" element={<ProductsPage />} />
         <Route path="customers" element={<CustomersPage />} />
         <Route path="sales" element={<SalesPage />} />
+        <Route path="reports/sales" element={<SalesReportPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
 
