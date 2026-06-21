@@ -11,6 +11,7 @@
 8. 07-CHECKLIST-QA.md
 9. 08-BITACORA-PROGRESO.md
 10. 09-COPILOT-WORKFLOW.md
+11. 10-PRUEBAS-INTEGRACION.md
 
 ## Reglas criticas del proyecto
 - Convencion de tablas: MR_/MC_ en mayusculas.

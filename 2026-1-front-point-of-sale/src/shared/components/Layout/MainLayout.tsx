@@ -1,16 +1,18 @@
 import { Outlet } from 'react-router-dom';
 import { Box } from '@mui/material';
+import { colorTokens } from '@/shared/config/colors';
+import SideNav from './SideNav';
+import AppHeader from './AppHeader';
 
-/**
- * Layout principal con sidebar lateral y área de contenido.
- * El sidebar (SideNav) y el header se añaden en Fase 8.
- */
 function MainLayout() {
   return (
-    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-      {/* SideNav — Fase 8 */}
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Outlet />
+    <Box sx={{ display: 'flex', minHeight: '100vh', bgcolor: colorTokens.background.default }}>
+      <SideNav />
+      <Box component="section" sx={{ flexGrow: 1, minWidth: 0 }}>
+        <AppHeader />
+        <Box component="main" className="p-4 md:p-6">
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );

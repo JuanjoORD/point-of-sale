@@ -9,7 +9,10 @@
     "start": "node dist/server.js",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
-    "format": "prettier --write \"src/**/*.ts\""
+    "format": "prettier --write \"src/**/*.ts\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:integration": "cross-env RUN_INTEGRATION=1 vitest run tests/integration"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -35,6 +38,10 @@
     "@typescript-eslint/parser": "^7.3.1",
     "eslint": "^8.57.0",
     "prettier": "^3.2.5",
+    "supertest": "^7.0.0",
+    "@types/supertest": "^6.0.2",
+    "cross-env": "^7.0.3",
+    "vitest": "^2.1.8",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.4.2"
   }

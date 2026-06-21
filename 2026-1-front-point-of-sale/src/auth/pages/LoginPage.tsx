@@ -9,6 +9,8 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
+import { appAssets } from '@/shared/config/assets';
+import { colorTokens } from '@/shared/config/colors';
 
 function LoginPage() {
   const { login } = useAuth();
@@ -32,25 +34,28 @@ function LoginPage() {
 
   return (
     <Box
+      className="flex min-h-screen items-center justify-center p-4"
       sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bgcolor: 'background.default',
+        bgcolor: colorTokens.background.default,
+        backgroundImage: `url(${appAssets.images.loginBackground})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
       }}
     >
       <Paper sx={{ p: 4, width: '100%', maxWidth: 400 }} elevation={3}>
-        <Typography variant="h5" fontWeight={700} mb={1} textAlign="center">
-          POS Inventario
-        </Typography>
+        <Box className="mb-3 flex flex-col items-center gap-2">
+          <Box component="img" src={appAssets.brand.logoCompact} alt={appAssets.brand.name} sx={{ width: 56, height: 56 }} />
+          <Typography variant="h5" fontWeight={700} textAlign="center">
+            {appAssets.brand.name}
+          </Typography>
+        </Box>
         <Typography variant="body2" color="text.secondary" mb={3} textAlign="center">
-          Inicia sesión para continuar
+          Inicia sesion para continuar
         </Typography>
 
         <form onSubmit={handleSubmit} noValidate>
           <TextField
-            label="Correo electrónico"
+            label="Correo electronico"
             type="email"
             fullWidth
             required
@@ -61,7 +66,7 @@ function LoginPage() {
             autoComplete="email"
           />
           <TextField
-            label="Contraseña"
+            label="Contrasena"
             type="password"
             fullWidth
             required

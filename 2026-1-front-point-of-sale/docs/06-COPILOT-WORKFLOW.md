@@ -2,9 +2,15 @@
 
 ## Estado actual del proyecto
 - Fase 0 completada: app base, routing, auth shell y cliente API.
-- Tailwind ya está configurado como estandar para utilidades de UI.
-- Login ya conecta contra el backend real con refresh automático de token.
-- Proximo bloque: pantallas maestras y flujo POS.
+- Tailwind configurado como estandar para utilidades de UI.
+- Tokens de color y assets centralizados en `src/shared/config/`.
+- Bloque 5 completado: layout con sidebar, CRUD de categorias y ubicaciones.
+- Bloque 6 completado: CRUD de productos/servicios en `/inventory/products`.
+- Bloque 7 completado: CRUD de clientes en `/customers`.
+- Bloque 8 completado: POS busqueda y carrito en `/sales` (Zustand + validacion de stock).
+- Bloque 9 completado: checkout POS con cliente, descuento opcional, confirmacion y comprobante via POST `/ventas`.
+- Bloque 10 completado: dashboard ventas del dia en `/` con KPIs, filtro por fecha/ubicacion y top productos via GET `/dashboard/ventas-dia`.
+- Proximo bloque: Reporte ventas por rango (Bloque 11).
 
 ## Ciclo por sesion
 1. Pedir estado actual del modulo.
@@ -23,6 +29,7 @@
 - Pedir resumen de riesgos al final.
 
 ## Como usar este workflow ahora
-- Priorizar componentes reutilizables para tablas, formularios y dialogs.
-- No duplicar logica de permisos: usar `PermissionGuard` y la API de auth.
-- Mantener cada sesion enfocada en una pantalla o flujo especifico.
+- Reutilizar `DataTable`, `EntityDialog` y `QueryState` para nuevas pantallas maestras.
+- Colores solo desde `shared/config/colors.ts`; logos/imagenes desde `shared/config/assets.ts`.
+- Siguiente paso: reporte ventas por rango contra GET `/api/v1/reportes/ventas`.
+- Mantener permisos con `PermissionGuard` y ocultar acciones segun rol.

@@ -15,3 +15,5 @@
 - Consumir endpoints versionados /api/v1.
 - Manejar loading/error/empty states.
 - Mantener formularios y tablas reutilizables.
+- Colores centralizados en `src/shared/config/colors.ts` (MUI + Tailwind).
+- Logos e imagenes centralizados en `src/shared/config/assets.ts` (archivos en `/public/assets`).

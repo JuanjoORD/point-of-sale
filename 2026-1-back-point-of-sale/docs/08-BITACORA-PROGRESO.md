@@ -55,3 +55,47 @@
 - Resultado: Compilacion correcta.
 - Bloqueos: Ninguno.
 - Siguiente paso: Inventario por ubicacion y alertas de stock minimo.
+
+### Sesion 05
+- Fecha: 2026-06-20
+- Duracion: Fase 5
+- Objetivo: Implementar modulo de inventario por ubicacion con movimientos y alertas de stock minimo.
+- Cambios realizados: Modulo inventario con listado paginado, registro inicial, ajustes transaccionales (ENTRADA/SALIDA/AJUSTE), trazabilidad en MR_MOVIMIENTO_INVENTARIO, sincronizacion de alertas en MR_ALERTA_STOCK y endpoints de consulta de alertas activas.
+- Archivos tocados: src/modules/inventario/*, src/app.ts, docs/04-MODULOS-ENDPOINTS.md, docs/09-COPILOT-WORKFLOW.md.
+- Pruebas ejecutadas: npx tsc --noEmit.
+- Resultado: Compilacion correcta.
+- Bloqueos: Ninguno.
+- Siguiente paso: Modulo de ventas transaccional (Bloque 11 / Fase 6).
+
+### Sesion 06
+- Fecha: 2026-06-20
+- Duracion: Fase 6
+- Objetivo: Implementar modulo de ventas transaccional con cabecera, detalle, descuento opcional y descuento de inventario.
+- Cambios realizados: Modulo ventas con POST transaccional (MR_VENTA + MR_VENTA_DETALLE), correlativo por ubicacion, validacion de stock, descuento por linea y adicional, movimientos tipo VENTA en inventario y GET listado/detalle con filtros.
+- Archivos tocados: src/modules/ventas/*, src/modules/inventario/inventario.service.ts, src/app.ts, docs/04-MODULOS-ENDPOINTS.md, docs/09-COPILOT-WORKFLOW.md.
+- Pruebas ejecutadas: npx tsc --noEmit.
+- Resultado: Compilacion correcta.
+- Bloqueos: Ninguno.
+- Siguiente paso: Dashboard ventas del dia y reportes (Bloque 12 / Fase 7).
+
+### Sesion 07
+- Fecha: 2026-06-20
+- Duracion: Fase 7
+- Objetivo: Implementar dashboard de ventas del dia y reportes por rango/top productos.
+- Cambios realizados: Modulo reportes con consultas agregadas sobre MR_VENTA y MR_VENTA_DETALLE; dashboard ventas-dia con top 5 productos; reportes de ventas por rango y top productos por cantidad/valor; filtros opcionales por ubicacion y fecha.
+- Archivos tocados: src/modules/reportes/*, src/app.ts, docs/04-MODULOS-ENDPOINTS.md, docs/09-COPILOT-WORKFLOW.md.
+- Pruebas ejecutadas: npx tsc --noEmit.
+- Resultado: Compilacion correcta.
+- Bloqueos: Ninguno.
+- Siguiente paso: Pruebas de integracion clave y hardening MVP backend (Bloques 13-14 / Fase 8).
+
+### Sesion 08
+- Fecha: 2026-06-20
+- Duracion: Fase 8
+- Objetivo: Cerrar MVP backend con QA, pruebas de integracion y hardening minimo.
+- Cambios realizados: Rate limit en login/refresh; health check con estado de BD; suite Vitest + Supertest (smoke e integracion opcional); scripts npm test/test:integration; checklist QA completado.
+- Archivos tocados: src/modules/auth/auth.routes.ts, src/app.ts, tests/*, vitest.config.ts, package.json, docs/07-CHECKLIST-QA.md, docs/09-COPILOT-WORKFLOW.md, docs/10-PRUEBAS-INTEGRACION.md, .env.example.
+- Pruebas ejecutadas: npx tsc --noEmit, npm run lint, npm test (7 smoke OK).
+- Resultado: MVP backend cerrado.
+- Bloqueos: Ninguno.
+- Siguiente paso: Avanzar frontend (catalogos, POS, dashboard) consumiendo la API completa.

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Alert } from '@mui/material';
-import { useAuth } from '../../../auth/contexts/AuthContext';
+import { useAuth } from '@/auth/contexts/AuthContext';
 
 interface PermissionGuardProps {
   permiso: string;
