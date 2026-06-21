@@ -9,7 +9,8 @@
 6. 05-PLAN-SPRINTS-2H-FRONTEND.md
 7. 07-BITACORA-PROGRESO.md
 8. 08-QA-POR-ROL.md
-9. 06-COPILOT-WORKFLOW.md
+9. 09-CIERRE-MVP-FRONTEND.md
+10. 06-COPILOT-WORKFLOW.md
 
 ## Reglas criticas del frontend
 - Respetar permisos por rol en rutas y acciones.

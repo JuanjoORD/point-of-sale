@@ -3,6 +3,10 @@
 ## Objetivo
 Construir interfaz React para operacion diaria de inventario y ventas con permisos por rol.
 
+## Estado del MVP
+
+**Completado** — ver `09-CIERRE-MVP-FRONTEND.md`.
+
 ## Alcance MVP
 - Login y rutas protegidas.
 - CRUD de catalogos y maestros.
@@ -19,3 +23,9 @@ Construir interfaz React para operacion diaria de inventario y ventas con permis
 4. POS.
 5. Dashboard/reportes.
 6. QA UX y ajuste final.
+
+## Fase siguiente (post-MVP)
+- Administracion de usuarios y roles.
+- Alertas de inventario en dashboard.
+- Historial de ventas en UI.
+- Exportacion PDF y mejoras de accesibilidad.

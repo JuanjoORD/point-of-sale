@@ -33,3 +33,17 @@ export function canAccessRoute(
   if (!item) return false;
   return hasPermission(item.permission);
 }
+
+export function getNavItemByPath(pathname: string): AppNavItemConfig | undefined {
+  if (pathname === '/') {
+    return APP_NAV_ITEMS.find((item) => item.path === '/');
+  }
+
+  const matches = APP_NAV_ITEMS.filter(
+    (item) =>
+      item.path !== '/' &&
+      (pathname === item.path || pathname.startsWith(`${item.path}/`)),
+  );
+
+  return matches.sort((a, b) => b.path.length - a.path.length)[0];
+}

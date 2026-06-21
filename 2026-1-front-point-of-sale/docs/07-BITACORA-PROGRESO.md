@@ -132,3 +132,14 @@
 - Resultado: Compilacion y build correctos; VENDEDOR inicia en `/sales`, ALMACENERO en categorias, GERENTE/ADMIN en Dashboard.
 - Bloqueos: Ninguno.
 - Siguiente paso: Ajustes UX y cierre MVP frontend (Bloque 14).
+
+### Sesion 12
+- Fecha: 2026-06-20
+- Duracion: Bloque 14
+- Objetivo: Ajustes UX finales y cierre del MVP frontend.
+- Cambios realizados: Titulo de pestana dinamico (`usePageTitle`), header con seccion activa y menu movil, sidebar responsivo (drawer en xs/sm), atajos POS Enter/Esc, documento `09-CIERRE-MVP-FRONTEND.md`, roadmap actualizado como MVP completado.
+- Archivos tocados: src/shared/hooks/usePageTitle.ts, src/shared/config/nav.config.ts, src/shared/components/Layout/AppHeader.tsx, src/shared/components/Layout/SideNav.tsx, src/shared/components/Layout/MainLayout.tsx, src/features/sales/components/ProductSearchPanel.tsx, docs/00-ROADMAP-FRONTEND.md, docs/03-FLUJO-POS-UI.md, docs/09-CIERRE-MVP-FRONTEND.md, docs/06-COPILOT-WORKFLOW.md, docs/README.md.
+- Pruebas ejecutadas: npx tsc --noEmit, npm run build.
+- Resultado: Compilacion y build correctos; **MVP frontend cerrado**.
+- Bloqueos: Ninguno.
+- Siguiente paso: Funcionalidades post-MVP (usuarios/roles, alertas stock, PDF).

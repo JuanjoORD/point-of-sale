@@ -13,7 +13,8 @@
 - Bloque 11 completado: reporte ventas por rango en `/reports/sales` con KPIs, filtros y exportacion CSV via GET `/reportes/ventas`.
 - Bloque 12 completado: reportes top productos en `/reports/top-products` (cantidad y valor) con filtros, limite configurable y exportacion CSV.
 - Bloque 13 completado: QA funcional por rol, redireccion inicial segun permisos, menu centralizado en `nav.config.ts` y matriz en `08-QA-POR-ROL.md`.
-- Proximo bloque: Ajustes UX y cierre MVP frontend (Bloque 14).
+- Bloque 14 completado: ajustes UX (titulo dinamico, header contextual, sidebar movil, atajos POS) y cierre MVP en `09-CIERRE-MVP-FRONTEND.md`.
+- **MVP frontend cerrado.** Proximas tareas: funcionalidades post-MVP (usuarios/roles, alertas stock, PDF).
 
 ## Ciclo por sesion
 1. Pedir estado actual del modulo.
@@ -34,5 +35,5 @@
 ## Como usar este workflow ahora
 - Reutilizar `DataTable`, `EntityDialog` y `QueryState` para nuevas pantallas maestras.
 - Colores solo desde `shared/config/colors.ts`; logos/imagenes desde `shared/config/assets.ts`.
-- Siguiente paso: ajustes UX finales y cierre MVP frontend (Bloque 14).
+- MVP frontend cerrado. Consultar `09-CIERRE-MVP-FRONTEND.md` para alcance y fase siguiente.
 - Mantener permisos con `PermissionGuard` y ocultar acciones segun rol.

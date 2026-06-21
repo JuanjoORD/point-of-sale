@@ -68,6 +68,16 @@ function ProductSearchPanel({ onFeedback }: ProductSearchPanelProps) {
         label="Nombre o codigo de barras"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Escape') {
+            setQuery('');
+            return;
+          }
+          if (e.key === 'Enter' && results.length > 0 && !isLoading && !isFetching) {
+            e.preventDefault();
+            handleAdd(results[0]);
+          }
+        }}
         fullWidth
         autoComplete="off"
         InputProps={{
@@ -78,6 +88,9 @@ function ProductSearchPanel({ onFeedback }: ProductSearchPanelProps) {
           ),
         }}
       />
+      <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
+        Enter agrega el primer resultado · Esc limpia la busqueda
+      </Typography>
 
       {showResults && (
         <Box mt={2}>

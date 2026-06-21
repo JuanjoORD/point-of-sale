@@ -20,6 +20,6 @@ Permitir venta rapida, con validaciones claras y minima friccion.
 
 ## UX minima
 - Input de busqueda con foco automatico.
-- Atajos teclado para caja.
-- Totales visibles siempre.
+- Atajos teclado para caja: Enter agrega el primer resultado; Esc limpia la busqueda.
+- Totales visibles siempre (subtotal, descuento y total en checkout).
 - Confirmacion final antes de enviar.
