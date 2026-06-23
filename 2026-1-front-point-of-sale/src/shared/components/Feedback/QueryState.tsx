@@ -8,6 +8,7 @@ interface QueryStateProps {
   isEmpty?: boolean;
   errorMessage?: string;
   emptyMessage?: string;
+  emptyAction?: ReactNode;
   children: ReactNode;
 }
 
@@ -17,6 +18,7 @@ function QueryState({
   isEmpty,
   errorMessage = 'No se pudo cargar la informacion.',
   emptyMessage = 'No hay registros para mostrar.',
+  emptyAction,
   children,
 }: QueryStateProps) {
   if (isLoading) {
@@ -38,9 +40,10 @@ function QueryState({
 
   if (isEmpty) {
     return (
-      <Box className="flex min-h-[240px] flex-col items-center justify-center gap-2 py-8">
+      <Box className="flex min-h-[240px] flex-col items-center justify-center gap-3 py-8">
         <Box component="img" src={appAssets.images.emptyState} alt="" sx={{ width: 140, opacity: 0.85 }} />
         <Typography color="text.secondary">{emptyMessage}</Typography>
+        {emptyAction}
       </Box>
     );
   }

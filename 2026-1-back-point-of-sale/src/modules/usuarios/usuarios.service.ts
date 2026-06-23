@@ -1,7 +1,7 @@
 import { QueryTypes } from 'sequelize';
 import bcrypt from 'bcryptjs';
 import sequelize from '../../config/database';
-import { NotFoundError, ConflictError } from '../../shared/errors/AppError';
+import { NotFoundError, ConflictError, ForbiddenError } from '../../shared/errors/AppError';
 import { PaginatedResult } from '../../shared/utils/response';
 
 export interface Usuario {
@@ -13,6 +13,7 @@ export interface Usuario {
   roles: string[];
   usuario_ingreso: string;
   fecha_ingreso: Date;
+  es_usuario_sistema: boolean;
 }
 
 interface DbUsuarioRow {
@@ -23,6 +24,7 @@ interface DbUsuarioRow {
   ultimo_login: Date | null;
   usuario_ingreso: string;
   fecha_ingreso: Date;
+  es_usuario_sistema: boolean | number;
 }
 
 interface DbRolRow { nombre_rol: string }
@@ -42,6 +44,7 @@ export interface UpdateUsuarioDto {
   activo?: boolean;
   roles?: number[];
   usuario: string;
+  actorIdUsuario: number;
 }
 
 const enrichWithRoles = async (rows: DbUsuarioRow[]): Promise<Usuario[]> => {
@@ -62,7 +65,11 @@ const enrichWithRoles = async (rows: DbUsuarioRow[]): Promise<Usuario[]> => {
     rolesMap.get(row.id_usuario)!.push(row.nombre_rol);
   }
 
-  return rows.map((u) => ({ ...u, roles: rolesMap.get(u.id_usuario) ?? [] }));
+  return rows.map((u) => ({
+    ...u,
+    es_usuario_sistema: Boolean(u.es_usuario_sistema),
+    roles: rolesMap.get(u.id_usuario) ?? [],
+  }));
 };
 
 export const findAll = async (
@@ -75,7 +82,7 @@ export const findAll = async (
 
   const [rows, countRows] = await Promise.all([
     sequelize.query<DbUsuarioRow>(
-      `SELECT id_usuario, nombre, email, activo, ultimo_login, usuario_ingreso, fecha_ingreso
+      `SELECT id_usuario, nombre, email, activo, ultimo_login, usuario_ingreso, fecha_ingreso, es_usuario_sistema
        FROM MR_USUARIO
        WHERE borrado = 0 ${where}
        ORDER BY nombre
@@ -100,7 +107,7 @@ export const findAll = async (
 
 export const findById = async (id: number): Promise<Usuario> => {
   const rows = await sequelize.query<DbUsuarioRow>(
-    `SELECT id_usuario, nombre, email, activo, ultimo_login, usuario_ingreso, fecha_ingreso
+    `SELECT id_usuario, nombre, email, activo, ultimo_login, usuario_ingreso, fecha_ingreso, es_usuario_sistema
      FROM MR_USUARIO WHERE id_usuario = :id AND borrado = 0`,
     { replacements: { id }, type: QueryTypes.SELECT },
   );
@@ -166,7 +173,37 @@ export const create = async (dto: CreateUsuarioDto): Promise<Usuario> => {
   return findById(id);
 };
 
+const getSystemUserFlag = async (id: number): Promise<boolean> => {
+  const rows = await sequelize.query<{ es_usuario_sistema: boolean | number }>(
+    `SELECT es_usuario_sistema FROM MR_USUARIO WHERE id_usuario = :id AND borrado = 0`,
+    { replacements: { id }, type: QueryTypes.SELECT },
+  );
+  if (!rows[0]) throw new NotFoundError('Usuario');
+  return Boolean(rows[0].es_usuario_sistema);
+};
+
+/** El admin SYSTEM solo puede editarse a si mismo; nadie puede eliminarlo. */
+const assertCanModifyUsuario = async (
+  targetId: number,
+  actorId: number,
+  action: 'update' | 'delete',
+): Promise<void> => {
+  const isSystemUser = await getSystemUserFlag(targetId);
+  if (!isSystemUser) return;
+
+  if (action === 'delete') {
+    throw new ForbiddenError('El administrador del sistema no puede ser eliminado.');
+  }
+
+  if (actorId !== targetId) {
+    throw new ForbiddenError(
+      'El administrador del sistema solo puede ser modificado por el propio usuario.',
+    );
+  }
+};
+
 export const update = async (id: number, dto: UpdateUsuarioDto): Promise<Usuario> => {
+  await assertCanModifyUsuario(id, dto.actorIdUsuario, 'update');
   await findById(id);
 
   if (dto.email) {
@@ -207,8 +244,14 @@ export const update = async (id: number, dto: UpdateUsuarioDto): Promise<Usuario
   return findById(id);
 };
 
-export const remove = async (id: number, usuario: string): Promise<void> => {
+export const remove = async (id: number, usuario: string, actorIdUsuario: number): Promise<void> => {
+  await assertCanModifyUsuario(id, actorIdUsuario, 'delete');
   await findById(id);
+  await sequelize.query(
+    `UPDATE MR_USUARIO_ROL SET borrado = 1, usuario_borrado = :usuario, fecha_borrado = GETDATE()
+     WHERE id_usuario = :id AND borrado = 0`,
+    { replacements: { id, usuario }, type: QueryTypes.UPDATE },
+  );
   await sequelize.query(
     `UPDATE MR_USUARIO SET borrado = 1, usuario_borrado = :usuario, fecha_borrado = GETDATE()
      WHERE id_usuario = :id`,
@@ -216,8 +259,14 @@ export const remove = async (id: number, usuario: string): Promise<void> => {
   );
 };
 
-export const getRoles = async (): Promise<DbRolRow[]> => {
-  return sequelize.query<DbRolRow>(
+export interface RolDisponible {
+  id_rol: number;
+  nombre_rol: string;
+  descripcion: string | null;
+}
+
+export const getRoles = async (): Promise<RolDisponible[]> => {
+  return sequelize.query<RolDisponible>(
     `SELECT id_rol, nombre_rol, descripcion FROM MR_ROL WHERE borrado = 0 ORDER BY nombre_rol`,
     { type: QueryTypes.SELECT },
   );

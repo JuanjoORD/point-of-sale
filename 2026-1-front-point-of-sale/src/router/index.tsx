@@ -9,6 +9,9 @@ import CustomersPage from '../features/customers/pages/CustomersPage';
 import SalesPage from '../features/sales/pages/SalesPage';
 import SalesReportPage from '../features/reports/pages/SalesReportPage';
 import TopProductsReportPage from '../features/reports/pages/TopProductsReportPage';
+import UsersPage from '../features/settings/pages/UsersPage';
+import RolesPage from '../features/settings/pages/RolesPage';
+import ProfilePage from '../features/settings/pages/ProfilePage';
 import HomePage from './HomePage';
 import DefaultRouteRedirect from './DefaultRouteRedirect';
 
@@ -35,6 +38,9 @@ function AppRouter() {
         <Route path="sales" element={<SalesPage />} />
         <Route path="reports/sales" element={<SalesReportPage />} />
         <Route path="reports/top-products" element={<TopProductsReportPage />} />
+        <Route path="settings/users" element={<UsersPage />} />
+        <Route path="settings/roles" element={<RolesPage />} />
+        <Route path="settings/profile" element={<ProfilePage />} />
         <Route path="*" element={<DefaultRouteRedirect />} />
       </Route>
 

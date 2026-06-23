@@ -19,11 +19,14 @@ import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import LeaderboardOutlinedIcon from '@mui/icons-material/LeaderboardOutlined';
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
+import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '@/auth/contexts/AuthContext';
 import { appAssets } from '@/shared/config/assets';
 import { colorTokens } from '@/shared/config/colors';
-import { APP_NAV_ITEMS } from '@/shared/config/nav.config';
+import { APP_NAV_ITEMS, canSeeNavItem } from '@/shared/config/nav.config';
 
 const DRAWER_WIDTH = 260;
 
@@ -36,6 +39,9 @@ const NAV_ICONS: Record<string, React.ReactNode> = {
   '/inventory/locations': <PlaceOutlinedIcon />,
   '/inventory/products': <Inventory2OutlinedIcon />,
   '/customers': <PeopleOutlineIcon />,
+  '/settings/users': <ManageAccountsOutlinedIcon />,
+  '/settings/roles': <AdminPanelSettingsOutlinedIcon />,
+  '/settings/profile': <AccountCircleOutlinedIcon />,
 };
 
 interface SideNavProps {
@@ -57,10 +63,12 @@ function NavBrand() {
 }
 
 function SideNav({ mobileOpen = false, onMobileClose }: SideNavProps) {
-  const { hasPermission } = useAuth();
+  const { hasPermission, canManageSecurity } = useAuth();
   const theme = useTheme();
   const isDesktop = useMediaQuery(theme.breakpoints.up('md'));
-  const visibleItems = APP_NAV_ITEMS.filter((item) => hasPermission(item.permission));
+  const visibleItems = APP_NAV_ITEMS.filter((item) =>
+    canSeeNavItem(item, hasPermission, canManageSecurity),
+  );
 
   const navList = (
     <List sx={{ px: 1, py: 2 }}>

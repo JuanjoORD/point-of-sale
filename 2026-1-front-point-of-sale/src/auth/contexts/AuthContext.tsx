@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import apiClient from '../../services/apiClient';
 
-// ── Tipos ─────────────────────────────────────────────────────────────────────
 export interface AuthUser {
   id_usuario: number;
   nombre: string;
   email: string;
-  permisos: string[]; // formato "recurso:accion"
+  permisos: string[];
+  es_gestor_seguridad?: boolean;
 }
 
 interface AuthContextType {
@@ -15,6 +15,8 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   hasPermission: (permiso: string) => boolean;
+  /** Permiso RBAC o flag es_gestor_seguridad (gestion usuarios/roles). */
+  canManageSecurity: (permiso: string) => boolean;
 }
 
 interface LoginResponse {
@@ -27,10 +29,8 @@ interface ProfileResponse {
   user: AuthUser;
 }
 
-// ── Context ───────────────────────────────────────────────────────────────────
 const AuthContext = createContext<AuthContextType | null>(null);
 
-// ── Provider ──────────────────────────────────────────────────────────────────
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AuthUser | null>(() => {
     try {
@@ -96,14 +96,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [user],
   );
 
+  const canManageSecurity = useCallback(
+    (permiso: string): boolean => {
+      if (!user) return false;
+      if (user.es_gestor_seguridad) return true;
+      return user.permisos.includes(permiso);
+    },
+    [user],
+  );
+
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout, hasPermission }}>
+    <AuthContext.Provider
+      value={{ user, isAuthenticated: !!user, login, logout, hasPermission, canManageSecurity }}
+    >
       {children}
     </AuthContext.Provider>
   );
 }
 
-// ── Hook ──────────────────────────────────────────────────────────────────────
 export function useAuth(): AuthContextType {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth debe usarse dentro de <AuthProvider>');

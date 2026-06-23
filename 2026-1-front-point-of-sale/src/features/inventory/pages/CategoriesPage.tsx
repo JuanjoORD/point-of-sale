@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import {
   Alert,
   Box,
+  Button,
   IconButton,
   Snackbar,
   TextField,
@@ -127,6 +128,13 @@ function CategoriesPage() {
           isError={isError}
           isEmpty={!isLoading && !isError && rows.length === 0}
           emptyMessage="Aun no hay categorias registradas."
+          emptyAction={
+            canCreate ? (
+              <Button variant="contained" onClick={openCreate}>
+                Registrar primera categoria
+              </Button>
+            ) : undefined
+          }
         >
           <DataTable
             title="Listado"

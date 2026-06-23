@@ -6,13 +6,13 @@ import { PERMISSIONS } from '@/shared/types/permissions.types';
 import DashboardPage from '@/features/dashboard/pages/DashboardPage';
 
 function HomePage() {
-  const { hasPermission } = useAuth();
+  const { hasPermission, canManageSecurity } = useAuth();
 
   if (hasPermission(PERMISSIONS.REPORTES_LEER)) {
     return <DashboardPage />;
   }
 
-  const fallback = resolveDefaultRoute(hasPermission);
+  const fallback = resolveDefaultRoute(hasPermission, canManageSecurity);
   if (fallback && fallback !== '/') {
     return <Navigate to={fallback} replace />;
   }

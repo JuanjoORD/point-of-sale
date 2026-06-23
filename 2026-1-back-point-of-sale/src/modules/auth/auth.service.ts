@@ -10,6 +10,7 @@ interface DbUserRow {
   nombre: string;
   email: string;
   hash_contrasena: string;
+  es_gestor_seguridad: boolean | number;
 }
 
 interface DbRoleRow {
@@ -26,6 +27,7 @@ interface AuthUser {
   email: string;
   roles: string[];
   permisos: string[];
+  es_gestor_seguridad: boolean;
 }
 
 interface LoginResult {
@@ -39,6 +41,7 @@ interface TokenPayload {
   email: string;
   roles: string[];
   permisos: string[];
+  es_gestor_seguridad: boolean;
   type: 'access' | 'refresh';
 }
 
@@ -49,7 +52,8 @@ const getUserByEmail = async (email: string): Promise<DbUserRow | null> => {
         u.id_usuario,
         u.nombre,
         u.email,
-        u.hash_contrasena
+        u.hash_contrasena,
+        u.es_gestor_seguridad
       FROM MR_USUARIO u
       WHERE u.email = :email
         AND u.activo = 1
@@ -71,7 +75,8 @@ const getUserById = async (idUsuario: number): Promise<DbUserRow | null> => {
         u.id_usuario,
         u.nombre,
         u.email,
-        u.hash_contrasena
+        u.hash_contrasena,
+        u.es_gestor_seguridad
       FROM MR_USUARIO u
       WHERE u.id_usuario = :idUsuario
         AND u.activo = 1
@@ -143,6 +148,7 @@ const buildAuthUser = async (idUsuario: number): Promise<AuthUser> => {
     email: user.email,
     roles,
     permisos,
+    es_gestor_seguridad: Boolean(user.es_gestor_seguridad),
   };
 };
 
@@ -152,6 +158,7 @@ const signAccessToken = (user: AuthUser): string => {
     email: user.email,
     roles: user.roles,
     permisos: user.permisos,
+    es_gestor_seguridad: user.es_gestor_seguridad,
     type: 'access',
   };
 
@@ -168,6 +175,7 @@ const signRefreshToken = (user: AuthUser): string => {
     email: user.email,
     roles: user.roles,
     permisos: user.permisos,
+    es_gestor_seguridad: user.es_gestor_seguridad,
     type: 'refresh',
   };
 
@@ -246,4 +254,43 @@ export const logout = async (): Promise<void> => {
   // JWT stateless: el cierre de sesión ocurre eliminando tokens en cliente.
   // Si se requiere revocación fuerte, implementar tabla de sesiones/blacklist.
   return Promise.resolve();
+};
+
+export interface UpdateProfileDto {
+  nombre?: string;
+  password?: string;
+}
+
+export const updateProfile = async (
+  idUsuario: number,
+  dto: UpdateProfileDto,
+): Promise<AuthUser> => {
+  const user = await getUserById(idUsuario);
+  if (!user) {
+    throw new UnauthorizedError('Usuario no válido o inactivo');
+  }
+
+  let hashSql = '';
+  const replacements: Record<string, unknown> = {
+    nombre: dto.nombre ?? null,
+    usuario: user.email,
+    idUsuario,
+  };
+
+  if (dto.password) {
+    replacements.hash = await bcrypt.hash(dto.password, 12);
+    hashSql = ', hash_contrasena = :hash';
+  }
+
+  await sequelize.query(
+    `UPDATE MR_USUARIO SET
+       nombre = COALESCE(:nombre, nombre)
+       ${hashSql},
+       usuario_actualiza = :usuario,
+       fecha_actualiza = GETDATE()
+     WHERE id_usuario = :idUsuario AND borrado = 0`,
+    { replacements, type: QueryTypes.UPDATE },
+  );
+
+  return buildAuthUser(idUsuario);
 };

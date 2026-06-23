@@ -7,6 +7,7 @@ declare global {
       email: string;
       roles: string[];
       permisos: string[];
+      es_gestor_seguridad?: boolean;
       type: 'access' | 'refresh';
     }
 

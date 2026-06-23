@@ -47,10 +47,20 @@ export const update = async (req: Request, res: Response): Promise<void> => {
   const parsed = updateSchema.safeParse(req.body);
   if (!parsed.success)
     throw new ValidationError(parsed.error.issues.map((i) => i.message).join(', '));
-  sendOk(res, await service.update(id, { ...parsed.data, usuario: getUsuario(req) }), 'Usuario actualizado');
+  if (!req.user?.id_usuario) throw new ValidationError('Usuario autenticado no disponible');
+  sendOk(
+    res,
+    await service.update(id, {
+      ...parsed.data,
+      usuario: getUsuario(req),
+      actorIdUsuario: req.user.id_usuario,
+    }),
+    'Usuario actualizado',
+  );
 };
 
 export const remove = async (req: Request, res: Response): Promise<void> => {
-  await service.remove(parseInt(req.params.id, 10), getUsuario(req));
+  if (!req.user?.id_usuario) throw new ValidationError('Usuario autenticado no disponible');
+  await service.remove(parseInt(req.params.id, 10), getUsuario(req), req.user.id_usuario);
   sendOk(res, null, 'Usuario eliminado');
 };

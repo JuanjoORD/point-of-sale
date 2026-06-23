@@ -48,6 +48,29 @@ export const profile = async (req: Request, res: Response): Promise<void> => {
   res.status(200).json({ user });
 };
 
+const updateProfileSchema = z.object({
+  nombre: z.string().min(1).max(150).optional(),
+  password: z.string().min(8).max(100).optional(),
+});
+
+export const updateProfile = async (req: Request, res: Response): Promise<void> => {
+  if (!req.user?.id_usuario) {
+    throw new ValidationError('Usuario autenticado no disponible');
+  }
+
+  const parsed = updateProfileSchema.safeParse(req.body);
+  if (!parsed.success) {
+    throw new ValidationError(parsed.error.issues.map((i) => i.message).join(', '));
+  }
+
+  if (!parsed.data.nombre && !parsed.data.password) {
+    throw new ValidationError('Debe indicar nombre o contrasena para actualizar');
+  }
+
+  const user = await authService.updateProfile(req.user.id_usuario, parsed.data);
+  res.status(200).json({ user, message: 'Perfil actualizado' });
+};
+
 export const permissionProbe = async (req: Request, res: Response): Promise<void> => {
   res.status(200).json({
     message: 'Permiso validado correctamente',

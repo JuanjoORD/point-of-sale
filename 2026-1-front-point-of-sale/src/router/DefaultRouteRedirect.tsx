@@ -4,8 +4,8 @@ import { useAuth } from '@/auth/contexts/AuthContext';
 import { resolveDefaultRoute } from '@/shared/config/nav.config';
 
 function DefaultRouteRedirect() {
-  const { hasPermission } = useAuth();
-  const target = resolveDefaultRoute(hasPermission);
+  const { hasPermission, canManageSecurity } = useAuth();
+  const target = resolveDefaultRoute(hasPermission, canManageSecurity);
 
   if (target) {
     return <Navigate to={target} replace />;

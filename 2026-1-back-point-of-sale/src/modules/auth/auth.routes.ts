@@ -19,6 +19,7 @@ router.post('/login', authLimiter, asyncHandler(authController.login));
 router.post('/refresh', authLimiter, asyncHandler(authController.refresh));
 router.post('/logout', authenticate, asyncHandler(authController.logout));
 router.get('/perfil', authenticate, asyncHandler(authController.profile));
+router.put('/perfil', authenticate, asyncHandler(authController.updateProfile));
 router.get(
 	'/permiso-prueba',
 	authenticate,

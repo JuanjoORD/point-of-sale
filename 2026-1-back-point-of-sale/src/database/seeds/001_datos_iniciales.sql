@@ -136,7 +136,7 @@ BEGIN
   DECLARE @id_admin INT;
   INSERT INTO MR_USUARIO (nombre, email, hash_contrasena, activo, usuario_ingreso)
   VALUES ('Administrador', 'admin@pos.local',
-          '$2b$12$PLACEHOLDER_REEMPLAZAR_CON_HASH_BCRYPT_REAL', 1, 'SYSTEM');
+          '$2a$12$l6I9LPchwJAlMUGVxwKjmOkVOEBZ2x0YR02iK/Bcdyygaq.Ky48zq', 1, 'SYSTEM');
   SET @id_admin = SCOPE_IDENTITY();
 
   INSERT INTO MR_USUARIO_ROL (id_usuario, id_rol, usuario_ingreso)

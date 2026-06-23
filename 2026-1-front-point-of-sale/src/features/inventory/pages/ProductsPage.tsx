@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import {
   Alert,
   Box,
+  Button,
   Chip,
   FormControlLabel,
   IconButton,
@@ -219,13 +220,32 @@ function ProductsPage() {
             }
             label="Incluir inactivos"
           />
+          {canCreate && (
+            <Button variant="contained" onClick={openCreate} sx={{ ml: { sm: 'auto' } }}>
+              Nuevo producto
+            </Button>
+          )}
         </Box>
+
+        {!canCreate && (
+          <Alert severity="info">
+            Tu rol solo permite consultar el catalogo. Para crear productos se requiere el permiso{' '}
+            <strong>productos:crear</strong> (roles ADMIN, GERENTE o ALMACENERO).
+          </Alert>
+        )}
 
         <QueryState
           isLoading={isLoading}
           isError={isError}
           isEmpty={!isLoading && !isError && rows.length === 0}
           emptyMessage="Aun no hay productos registrados."
+          emptyAction={
+            canCreate ? (
+              <Button variant="contained" onClick={openCreate}>
+                Registrar primer producto
+              </Button>
+            ) : undefined
+          }
         >
           <DataTable
             title="Listado"

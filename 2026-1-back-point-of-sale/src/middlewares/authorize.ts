@@ -10,7 +10,7 @@ export const authorize = (requiredPermission: string) => {
     const permissions = req.user.permisos ?? [];
     const roles = req.user.roles ?? [];
 
-    if (roles.includes('ADMIN') || permissions.includes(requiredPermission)) {
+    if (roles.includes('ADMIN') || req.user.es_gestor_seguridad || permissions.includes(requiredPermission)) {
       next();
       return;
     }
