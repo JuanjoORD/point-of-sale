@@ -9,6 +9,7 @@ import { AppError } from './shared/errors/AppError';
 import authRoutes from './modules/auth/auth.routes';
 import categoriasRoutes from './modules/categorias/categorias.routes';
 import ubicacionesRoutes from './modules/ubicaciones/ubicaciones.routes';
+import ubicacionesAlmacenamientoRoutes from './modules/ubicaciones-almacenamiento/ubicaciones-almacenamiento.routes';
 import productosRoutes from './modules/productos/productos.routes';
 import usuariosRoutes from './modules/usuarios/usuarios.routes';
 import rolesRoutes from './modules/roles/roles.routes';
@@ -73,6 +74,7 @@ app.get('/health', async (_req: Request, res: Response) => {
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/categorias', categoriasRoutes);
 app.use('/api/v1/ubicaciones', ubicacionesRoutes);
+app.use('/api/v1/ubicaciones-almacenamiento', ubicacionesAlmacenamientoRoutes);
 app.use('/api/v1/productos', productosRoutes);
 app.use('/api/v1/usuarios', usuariosRoutes);
 app.use('/api/v1/roles', rolesRoutes);

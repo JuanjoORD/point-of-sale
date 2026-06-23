@@ -12,6 +12,7 @@ const createSchema = z.object({
   precio_venta: z.number().min(0),
   es_servicio: z.boolean().optional().default(false),
   id_categoria: z.number().int().positive().optional(),
+  id_ubicacion_almacenamiento: z.number().int().positive().optional(),
 });
 
 const updateSchema = z.object({
@@ -22,6 +23,7 @@ const updateSchema = z.object({
   precio_venta: z.number().min(0).optional(),
   es_servicio: z.boolean().optional(),
   id_categoria: z.number().int().positive().nullable().optional(),
+  id_ubicacion_almacenamiento: z.number().int().positive().nullable().optional(),
   activo: z.boolean().optional(),
 });
 

@@ -4,6 +4,7 @@ import LoginPage from '../auth/pages/LoginPage';
 import MainLayout from '../shared/components/Layout/MainLayout';
 import CategoriesPage from '../features/inventory/pages/CategoriesPage';
 import LocationsPage from '../features/inventory/pages/LocationsPage';
+import StorageLocationsPage from '../features/inventory/pages/StorageLocationsPage';
 import ProductsPage from '../features/inventory/pages/ProductsPage';
 import CustomersPage from '../features/customers/pages/CustomersPage';
 import SalesPage from '../features/sales/pages/SalesPage';
@@ -33,6 +34,7 @@ function AppRouter() {
         <Route index element={<HomePage />} />
         <Route path="inventory/categories" element={<CategoriesPage />} />
         <Route path="inventory/locations" element={<LocationsPage />} />
+        <Route path="inventory/storage-locations" element={<StorageLocationsPage />} />
         <Route path="inventory/products" element={<ProductsPage />} />
         <Route path="customers" element={<CustomersPage />} />
         <Route path="sales" element={<SalesPage />} />

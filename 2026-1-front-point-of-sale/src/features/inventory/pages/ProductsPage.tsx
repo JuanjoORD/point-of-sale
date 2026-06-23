@@ -20,7 +20,9 @@ import ProductFormDialog, { ProductFormValues } from '../components/ProductFormD
 import { PERMISSIONS } from '@/shared/types/permissions.types';
 import { useAuth } from '@/auth/contexts/AuthContext';
 import { useCategorias } from '../hooks/useCategorias';
+import { useUbicacionesAlmacenamiento } from '../hooks/useUbicacionesAlmacenamiento';
 import { Producto, useProductoMutations, useProductos } from '../hooks/useProductos';
+import { formatUbicacionAlmacenamiento } from '../types/inventory.types';
 
 const emptyForm: ProductFormValues = {
   nombre_producto: '',
@@ -30,6 +32,7 @@ const emptyForm: ProductFormValues = {
   precio_venta: '0',
   es_servicio: false,
   id_categoria: '',
+  id_ubicacion_almacenamiento: '',
   activo: true,
 };
 
@@ -51,11 +54,15 @@ function ProductsPage() {
 
   const { data, isLoading, isError } = useProductos(search, includeInactive);
   const { data: categoriasData } = useCategorias('');
+  const { data: ubicacionesAlmacenamientoData } = useUbicacionesAlmacenamiento('', {
+    enabled: hasPermission(PERMISSIONS.INVENTARIO_LEER),
+  });
   const { create, update, remove, getErrorMessage } = useProductoMutations();
 
   const canCreate = hasPermission(PERMISSIONS.PRODUCTOS_CREAR);
   const canEdit = hasPermission(PERMISSIONS.PRODUCTOS_EDITAR);
   const categorias = categoriasData?.data ?? [];
+  const ubicacionesAlmacenamiento = ubicacionesAlmacenamientoData?.data ?? [];
 
   const columns = useMemo(
     () => [
@@ -69,6 +76,12 @@ function ProductsPage() {
         id: 'categoria',
         label: 'Categoria',
         render: (row: Producto) => row.nombre_categoria ?? '—',
+      },
+      {
+        id: 'ubicacion',
+        label: 'Almacenamiento',
+        render: (row: Producto) =>
+          row.estanteria ? formatUbicacionAlmacenamiento(row) : '—',
       },
       {
         id: 'precio_venta',
@@ -119,6 +132,9 @@ function ProductsPage() {
       precio_venta: String(row.precio_venta),
       es_servicio: row.es_servicio,
       id_categoria: row.id_categoria ? String(row.id_categoria) : '',
+      id_ubicacion_almacenamiento: row.id_ubicacion_almacenamiento
+        ? String(row.id_ubicacion_almacenamiento)
+        : '',
       activo: row.activo,
     });
     setDialogOpen(true);
@@ -140,6 +156,9 @@ function ProductsPage() {
       precio_venta: precioVenta,
       es_servicio: formValues.es_servicio,
       id_categoria: formValues.id_categoria ? parseInt(formValues.id_categoria, 10) : undefined,
+      id_ubicacion_almacenamiento: formValues.id_ubicacion_almacenamiento
+        ? parseInt(formValues.id_ubicacion_almacenamiento, 10)
+        : undefined,
     };
   };
 
@@ -163,6 +182,9 @@ function ProductsPage() {
           payload: {
             ...payload,
             id_categoria: formValues.id_categoria ? parseInt(formValues.id_categoria, 10) : null,
+            id_ubicacion_almacenamiento: formValues.id_ubicacion_almacenamiento
+              ? parseInt(formValues.id_ubicacion_almacenamiento, 10)
+              : null,
             codigo_barras: formValues.codigo_barras.trim() || null,
             activo: formValues.activo,
           },
@@ -277,6 +299,7 @@ function ProductsPage() {
           title={editing ? 'Editar producto' : 'Nuevo producto'}
           values={formValues}
           categorias={categorias}
+          ubicacionesAlmacenamiento={ubicacionesAlmacenamiento}
           isEditing={!!editing}
           loading={isSaving}
           onChange={(name, value) => setFormValues((prev) => ({ ...prev, [name]: value }))}

@@ -14,6 +14,7 @@ import {
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
+import WarehouseOutlinedIcon from '@mui/icons-material/WarehouseOutlined';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import PointOfSaleOutlinedIcon from '@mui/icons-material/PointOfSaleOutlined';
@@ -37,6 +38,7 @@ const NAV_ICONS: Record<string, React.ReactNode> = {
   '/sales': <PointOfSaleOutlinedIcon />,
   '/inventory/categories': <CategoryOutlinedIcon />,
   '/inventory/locations': <PlaceOutlinedIcon />,
+  '/inventory/storage-locations': <WarehouseOutlinedIcon />,
   '/inventory/products': <Inventory2OutlinedIcon />,
   '/customers': <PeopleOutlineIcon />,
   '/settings/users': <ManageAccountsOutlinedIcon />,

@@ -24,6 +24,34 @@ export interface UbicacionPayload {
   descripcion?: string;
 }
 
+export interface UbicacionAlmacenamiento {
+  id_ubicacion_almacenamiento: number;
+  estanteria: string;
+  fila: string | null;
+  caja: string | null;
+  descripcion: string | null;
+  usuario_ingreso: string;
+  fecha_ingreso: string;
+}
+
+export interface UbicacionAlmacenamientoPayload {
+  estanteria: string;
+  fila?: string;
+  caja?: string;
+  descripcion?: string;
+}
+
+export function formatUbicacionAlmacenamiento(row: {
+  estanteria: string;
+  fila?: string | null;
+  caja?: string | null;
+}): string {
+  const parts: string[] = [`Est. ${row.estanteria}`];
+  if (row.fila) parts.push(`Fila ${row.fila}`);
+  if (row.caja) parts.push(`Caja ${row.caja}`);
+  return parts.join(' / ');
+}
+
 export interface Producto {
   id_producto: number;
   nombre_producto: string;
@@ -34,6 +62,10 @@ export interface Producto {
   es_servicio: boolean;
   id_categoria: number | null;
   nombre_categoria: string | null;
+  id_ubicacion_almacenamiento: number | null;
+  estanteria: string | null;
+  fila: string | null;
+  caja: string | null;
   activo: boolean;
   usuario_ingreso: string;
   fecha_ingreso: string;
@@ -47,10 +79,12 @@ export interface ProductoPayload {
   precio_venta: number;
   es_servicio?: boolean;
   id_categoria?: number;
+  id_ubicacion_almacenamiento?: number;
 }
 
 export interface ProductoUpdatePayload extends Partial<ProductoPayload> {
   codigo_barras?: string | null;
   id_categoria?: number | null;
+  id_ubicacion_almacenamiento?: number | null;
   activo?: boolean;
 }

@@ -17,6 +17,11 @@ export const APP_NAV_ITEMS: AppNavItemConfig[] = [
   { label: 'Punto de venta', path: '/sales', permission: PERMISSIONS.VENTAS_CREAR },
   { label: 'Categorias', path: '/inventory/categories', permission: PERMISSIONS.PRODUCTOS_LEER },
   { label: 'Ubicaciones', path: '/inventory/locations', permission: PERMISSIONS.INVENTARIO_LEER },
+  {
+    label: 'Almacenamiento',
+    path: '/inventory/storage-locations',
+    permission: PERMISSIONS.INVENTARIO_LEER,
+  },
   { label: 'Productos', path: '/inventory/products', permission: PERMISSIONS.PRODUCTOS_LEER },
   { label: 'Clientes', path: '/customers', permission: PERMISSIONS.CLIENTES_LEER },
   { label: 'Usuarios', path: '/settings/users', permission: PERMISSIONS.USUARIOS_LEER, securityOnly: true },

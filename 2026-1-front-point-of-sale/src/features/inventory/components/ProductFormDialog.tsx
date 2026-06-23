@@ -13,7 +13,7 @@ import {
   Switch,
   TextField,
 } from '@mui/material';
-import { Categoria } from '../types/inventory.types';
+import { Categoria, UbicacionAlmacenamiento, formatUbicacionAlmacenamiento } from '../types/inventory.types';
 
 export interface ProductFormValues {
   nombre_producto: string;
@@ -23,6 +23,7 @@ export interface ProductFormValues {
   precio_venta: string;
   es_servicio: boolean;
   id_categoria: string;
+  id_ubicacion_almacenamiento: string;
   activo: boolean;
 }
 
@@ -31,6 +32,7 @@ interface ProductFormDialogProps {
   title: string;
   values: ProductFormValues;
   categorias: Categoria[];
+  ubicacionesAlmacenamiento: UbicacionAlmacenamiento[];
   isEditing: boolean;
   loading?: boolean;
   onChange: <K extends keyof ProductFormValues>(name: K, value: ProductFormValues[K]) => void;
@@ -43,6 +45,7 @@ function ProductFormDialog({
   title,
   values,
   categorias,
+  ubicacionesAlmacenamiento,
   isEditing,
   loading = false,
   onChange,
@@ -122,6 +125,29 @@ function ProductFormDialog({
                 ))}
               </Select>
             </FormControl>
+            {!values.es_servicio && (
+              <FormControl fullWidth margin="dense">
+                <InputLabel id="producto-ubicacion-almacenamiento-label">
+                  Ubicacion de almacenamiento
+                </InputLabel>
+                <Select
+                  labelId="producto-ubicacion-almacenamiento-label"
+                  label="Ubicacion de almacenamiento"
+                  value={values.id_ubicacion_almacenamiento}
+                  onChange={(e) => onChange('id_ubicacion_almacenamiento', e.target.value)}
+                >
+                  <MenuItem value="">Sin ubicacion</MenuItem>
+                  {ubicacionesAlmacenamiento.map((ubicacion) => (
+                    <MenuItem
+                      key={ubicacion.id_ubicacion_almacenamiento}
+                      value={String(ubicacion.id_ubicacion_almacenamiento)}
+                    >
+                      {formatUbicacionAlmacenamiento(ubicacion)}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
             <FormControlLabel
               control={
                 <Switch

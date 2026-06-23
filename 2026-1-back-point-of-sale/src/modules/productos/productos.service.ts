@@ -13,6 +13,10 @@ export interface Producto {
   es_servicio: boolean;
   id_categoria: number | null;
   nombre_categoria: string | null;
+  id_ubicacion_almacenamiento: number | null;
+  estanteria: string | null;
+  fila: string | null;
+  caja: string | null;
   activo: boolean;
   usuario_ingreso: string;
   fecha_ingreso: Date;
@@ -26,6 +30,7 @@ export interface CreateProductoDto {
   precio_venta: number;
   es_servicio?: boolean;
   id_categoria?: number;
+  id_ubicacion_almacenamiento?: number;
   usuario: string;
 }
 
@@ -37,6 +42,7 @@ export interface UpdateProductoDto {
   precio_venta?: number;
   es_servicio?: boolean;
   id_categoria?: number | null;
+  id_ubicacion_almacenamiento?: number | null;
   activo?: boolean;
   usuario: string;
 }
@@ -51,11 +57,22 @@ const BASE_SELECT = `
   p.es_servicio,
   p.id_categoria,
   c.nombre_categoria,
+  p.id_ubicacion_almacenamiento,
+  ua.estanteria,
+  ua.fila,
+  ua.caja,
   p.activo,
   p.usuario_ingreso,
   p.fecha_ingreso,
   p.usuario_actualiza,
   p.fecha_actualiza
+`;
+
+const BASE_FROM = `
+  FROM MR_PRODUCTO p
+  LEFT JOIN MC_CATEGORIA c ON c.id_categoria = p.id_categoria AND c.borrado = 0
+  LEFT JOIN MC_UBICACION_ALMACENAMIENTO ua
+    ON ua.id_ubicacion_almacenamiento = p.id_ubicacion_almacenamiento AND ua.borrado = 0
 `;
 
 export const findAll = async (
@@ -71,8 +88,7 @@ export const findAll = async (
   const [rows, countRows] = await Promise.all([
     sequelize.query<Producto>(
       `SELECT ${BASE_SELECT}
-       FROM MR_PRODUCTO p
-       LEFT JOIN MC_CATEGORIA c ON c.id_categoria = p.id_categoria AND c.borrado = 0
+       ${BASE_FROM}
        WHERE p.borrado = 0 ${activoFilter} ${searchFilter}
        ORDER BY p.nombre_producto
        OFFSET :offset ROWS FETCH NEXT :limit ROWS ONLY`,
@@ -106,8 +122,7 @@ export const findAll = async (
 export const buscar = async (q: string): Promise<Producto[]> => {
   return sequelize.query<Producto>(
     `SELECT TOP 20 ${BASE_SELECT}
-     FROM MR_PRODUCTO p
-     LEFT JOIN MC_CATEGORIA c ON c.id_categoria = p.id_categoria AND c.borrado = 0
+     ${BASE_FROM}
      WHERE p.borrado = 0 AND p.activo = 1
        AND (p.nombre_producto LIKE :search OR p.codigo_barras = :exacto)
      ORDER BY p.nombre_producto`,
@@ -121,8 +136,7 @@ export const buscar = async (q: string): Promise<Producto[]> => {
 export const findById = async (id: number): Promise<Producto> => {
   const rows = await sequelize.query<Producto>(
     `SELECT ${BASE_SELECT}
-     FROM MR_PRODUCTO p
-     LEFT JOIN MC_CATEGORIA c ON c.id_categoria = p.id_categoria AND c.borrado = 0
+     ${BASE_FROM}
      WHERE p.id_producto = :id AND p.borrado = 0`,
     { replacements: { id }, type: QueryTypes.SELECT },
   );
@@ -147,9 +161,9 @@ export const create = async (dto: CreateProductoDto): Promise<Producto> => {
   const result = await sequelize.query<{ id_producto: number }>(
     `INSERT INTO MR_PRODUCTO
        (nombre_producto, descripcion, codigo_barras, precio_costo, precio_venta,
-        es_servicio, id_categoria, usuario_ingreso)
+        es_servicio, id_categoria, id_ubicacion_almacenamiento, usuario_ingreso)
      OUTPUT INSERTED.id_producto
-     VALUES (:nombre, :desc, :barcode, :costo, :venta, :servicio, :cat, :usuario)`,
+     VALUES (:nombre, :desc, :barcode, :costo, :venta, :servicio, :cat, :ubicacion, :usuario)`,
     {
       replacements: {
         nombre: dto.nombre_producto,
@@ -159,6 +173,7 @@ export const create = async (dto: CreateProductoDto): Promise<Producto> => {
         venta: dto.precio_venta,
         servicio: dto.es_servicio ? 1 : 0,
         cat: dto.id_categoria ?? null,
+        ubicacion: dto.id_ubicacion_almacenamiento ?? null,
         usuario: dto.usuario,
       },
       type: QueryTypes.SELECT,
@@ -187,6 +202,9 @@ export const update = async (id: number, dto: UpdateProductoDto): Promise<Produc
        id_categoria     = CASE WHEN :catNull = 1 THEN NULL
                                WHEN :cat IS NOT NULL THEN :cat
                                ELSE id_categoria END,
+       id_ubicacion_almacenamiento = CASE WHEN :ubicNull = 1 THEN NULL
+                                          WHEN :ubicacion IS NOT NULL THEN :ubicacion
+                                          ELSE id_ubicacion_almacenamiento END,
        activo           = COALESCE(:activo,   activo),
        usuario_actualiza = :usuario,
        fecha_actualiza  = GETDATE()
@@ -202,6 +220,8 @@ export const update = async (id: number, dto: UpdateProductoDto): Promise<Produc
         servicio:    dto.es_servicio !== undefined ? (dto.es_servicio ? 1 : 0) : null,
         cat:         dto.id_categoria    ?? null,
         catNull:     dto.id_categoria   === null ? 1 : 0,
+        ubicacion:   dto.id_ubicacion_almacenamiento ?? null,
+        ubicNull:    dto.id_ubicacion_almacenamiento === null ? 1 : 0,
         activo:      dto.activo !== undefined ? (dto.activo ? 1 : 0) : null,
         usuario:     dto.usuario,
         id,
